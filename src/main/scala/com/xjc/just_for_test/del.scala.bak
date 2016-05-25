@@ -1,0 +1,13 @@
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.FileSystem
+import org.apache.hadoop.fs.Path
+
+
+fs.delete(new Path(hiveDataLocation))
+      //login action
+      val fs = FileSystem.get(new URI("hdfs://Namenode01.Hadoop:9000"), new Configuration())
+      val status = fs.listStatus(new Path("/user/hive/warehouse/db_log_parase.db/t_nearby_log/"))
+      val fileList = status.map(_.getPath.toString).filter(_.contains("dt=")).
+                           filter(_.split("dt=")(1) >= days30).mkString(",")
+                           fs.delete(new Path(hiveDataLocation))
+
