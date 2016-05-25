@@ -1,0 +1,52 @@
+[0m[[0mdebug[0m] [0m[0m
+[0m[[0mdebug[0m] [0mInitial source changes: [0m
+[0m[[0mdebug[0m] [0m	removed:Set()[0m
+[0m[[0mdebug[0m] [0m	added: Set(/data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/orders.scala, /data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/HelloWorld.scala)[0m
+[0m[[0mdebug[0m] [0m	modified: Set()[0m
+[0m[[0mdebug[0m] [0mInvalidated products: Set()[0m
+[0m[[0mdebug[0m] [0mExternal API changes: API Changes: Set()[0m
+[0m[[0mdebug[0m] [0mModified binary dependencies: Set()[0m
+[0m[[0mdebug[0m] [0mInitial directly invalidated sources: Set(/data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/orders.scala, /data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/HelloWorld.scala)[0m
+[0m[[0mdebug[0m] [0m[0m
+[0m[[0mdebug[0m] [0mSources indirectly invalidated by:[0m
+[0m[[0mdebug[0m] [0m	product: Set()[0m
+[0m[[0mdebug[0m] [0m	binary dep: Set()[0m
+[0m[[0mdebug[0m] [0m	external source: Set()[0m
+[0m[[0mdebug[0m] [0mAll initially invalidated sources: Set(/data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/orders.scala, /data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/HelloWorld.scala)[0m
+[0m[[0mdebug[0m] [0mRecompiling all 2 sources: invalidated sources (2) exceeded 50.0% of all sources[0m
+[0m[[0minfo[0m] [0mCompiling 2 Scala sources to /data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/target/scala-2.10/classes...[0m
+[0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 2.10.5[0m
+[0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 2.10.5[0m
+[0m[[0mdebug[0m] [0mRunning cached compiler 52158e1a, interfacing (CompilerInterface) with Scala compiler version 2.10.5[0m
+[0m[[0mdebug[0m] [0mCalling Scala compiler with arguments  (CompilerInterface):[0m
+[0m[[0mdebug[0m] [0m	-bootclasspath[0m
+[0m[[0mdebug[0m] [0m	/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.75.x86_64/jre/lib/resources.jar:/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.75.x86_64/jre/lib/rt.jar:/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.75.x86_64/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.75.x86_64/jre/lib/jsse.jar:/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.75.x86_64/jre/lib/jce.jar:/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.75.x86_64/jre/lib/charsets.jar:/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.75.x86_64/jre/lib/rhino.jar:/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.75.x86_64/jre/lib/jfr.jar:/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.75.x86_64/jre/classes:/home/hadoop/.sbt/boot/scala-2.10.5/lib/scala-library.jar[0m
+[0m[[0mdebug[0m] [0m	-classpath[0m
+[0m[[0mdebug[0m] [0m	/data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/target/scala-2.10/classes[0m
+[0m[[31merror[0m] [0m/data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/HelloWorld.scala:1: object apache is not a member of package org[0m
+[0m[[31merror[0m] [0mimport org.apache.spark.SparkConf[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m/data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/HelloWorld.scala:2: object apache is not a member of package org[0m
+[0m[[31merror[0m] [0mimport org.apache.spark.SparkContext[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m/data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/HelloWorld.scala:3: object apache is not a member of package org[0m
+[0m[[31merror[0m] [0mimport org.apache.spark.SparkContext._[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m/data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/HelloWorld.scala:7: not found: type SparkConf[0m
+[0m[[31merror[0m] [0m    val conf = new SparkConf().setAppName("test")[0m
+[0m[[31merror[0m] [0m                   ^[0m
+[0m[[31merror[0m] [0m/data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/HelloWorld.scala:8: not found: type SparkContext[0m
+[0m[[31merror[0m] [0m    val sc = new SparkContext(conf)[0m
+[0m[[31merror[0m] [0m                 ^[0m
+[0m[[31merror[0m] [0m/data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/orders.scala:1: object apache is not a member of package org[0m
+[0m[[31merror[0m] [0mimport org.apache.spark.{SparkConf,SparkContext}[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m/data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/orders.scala:6: not found: type SparkConf[0m
+[0m[[31merror[0m] [0m        val conf = new SparkConf().setAppName("test")[0m
+[0m[[31merror[0m] [0m                       ^[0m
+[0m[[31merror[0m] [0m/data3/xjc/spark-test/helloWorld/src/main/scala/com/xjc/orders.scala:7: not found: type SparkContext[0m
+[0m[[31merror[0m] [0m	val sc = new SparkContext(conf)[0m
+[0m[[31merror[0m] [0m	             ^[0m
+[0m[[31merror[0m] [0m8 errors found[0m
+[0m[[0mdebug[0m] [0mCompilation failed (CompilerInterface)[0m
+[0m[[31merror[0m] [0m(compile:[31mcompileIncremental[0m) Compilation failed[0m
