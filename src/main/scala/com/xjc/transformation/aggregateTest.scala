@@ -3,9 +3,9 @@ package com.xjc.transformation
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
-def
-aggregate[U](zeroValue: U)(seqOp: (U, (K, C)) ⇒ U, combOp: (U, U) ⇒ U)(implicit arg0: ClassTag[U]): U
-*/
+  def
+  aggregate[U](zeroValue: U)(seqOp: (U, (K, C)) ⇒ U, combOp: (U, U) ⇒ U)(implicit arg0: ClassTag[U]): U
+ */
 
 object aggregateTest {
 
