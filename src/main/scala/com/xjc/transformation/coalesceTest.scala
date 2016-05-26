@@ -34,15 +34,15 @@ object coalesceTest {
             printParSet(a)
             
 
-            a.coalesce(3)
-            println("first " * 5)
-            println(a.partitions)
-            println(a.toDebugString)
+            val a1 = a.coalesce(3)
+            println(a1.partitions)
+            println(a1.toDebugString)
+            printParSet(a1)
 
-            a.coalesce(5,true)
-            println("first " * 5)
-            println(a.partitions)
-            println(a.toDebugString)
+            val a2 = a.coalesce(5,true)
+            println(a2.partitions)
+            println(a2.toDebugString)
+            printParSet(a2)
             //http://stackoverflow.com/questions/31610971/spark-repartition-vs-coalesce
 
 
