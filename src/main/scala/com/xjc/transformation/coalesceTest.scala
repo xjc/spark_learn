@@ -5,10 +5,10 @@ import org.apache.spark.rdd.RDD
 
 object coalesceTest {
 
-    def printParSet(a:RDD[Int]) {
+    def printParSet[T](a:RDD[T]) {
         import scala.collection.mutable.Map
             val partCheckRdd = a.mapPartitionsWithIndex((i,j) => {
-            var map1 = Map[String, List[Int]]()
+            var map1 = Map[String, List[T]]()
             val index_name = "index_" + i.toString
             for (x <- j) {
                 if (map1.contains(index_name)) {
