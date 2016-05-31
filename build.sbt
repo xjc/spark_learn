@@ -17,6 +17,7 @@ lazy val root = (project in file(".")).
     libraryDependencies += spark,
     libraryDependencies += spark_streaming,
     libraryDependencies += spark_sql,
+    libraryDependencies += spark_hive,
     libraryDependencies += sparkStreamKafka,
     libraryDependencies += mysql_driver,
     resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
