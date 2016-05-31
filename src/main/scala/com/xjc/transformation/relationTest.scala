@@ -1,5 +1,12 @@
 package com.xjc.transformation
 
+/**
+ * subtract(other: RDD[T]): RDD[T]
+ * Return an RDD with the elements from this that are not in other.
+ *
+ * Uses this partitioner/partition size, because even if other is huge, the resulting RDD will be <= us.
+*/
+
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.SparkContext._
 import java.sql.{Timestamp, DriverManager, PreparedStatement, Connection}
@@ -26,6 +33,9 @@ object relationTest {
             val cartesianRdd = rdd1.cartesian(rdd2)
             cartesianRdd.collect.foreach(println)
             // [10 * 10
+
+            rdd1.subtract(rdd2).sortBy(i=>i, true, 1). collect.foreach(println)
+
 
             sc.stop
     }
