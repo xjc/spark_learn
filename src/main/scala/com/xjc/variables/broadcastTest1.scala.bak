@@ -1,0 +1,50 @@
+package com.xjc.variables
+import org.apache.spark.{SparkConf,SparkContext}
+import com.xjc.utils.getTableLocation
+import org.apache.spark.sql.hive.HiveContext
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.{FileSystem, Path}
+import java.net.URI
+
+/**
+base_phone a left outer join all_order_phone b
+ on  a.phone = b.phone
+where b.phone is null
+*/
+
+object broadcastData {
+    def main(args:Array[String]) {
+        //val conf = new SparkConf().setAppName("test").setMaster("local[10]")
+        val conf = new SparkConf().setAppName("broadcastData")
+        val sc = new SparkContext(conf)
+        val fs = FileSystem.get(new URI("hdfs://Namenode01.Hadoop:9000"), new Configuration())
+
+        val base_phone = sc.textFile("hdfs://Namenode01.Hadoop:9000/user/hive/warehouse/tmp.db/t_regedit_no_order_phone/dt=2016-05-26")
+        val base_phone_set = base_phone.collect.toSet
+        val broadcast_phone = sc.broadcast(base_phone_set)
+        val all_order_phone = sc.textFile("hdfs://Namenode01.Hadoop:9000/user/hive/warehouse/dwd.db/dwd_m00_user_order_info").
+            map(_.split("\001")).
+            map{case Array(phone, a,b, first_ord_date, _*) => (phone.trim, first_ord_date)}
+
+        val order_phone = all_order_phone.mapPartitions{iter=>{
+                val m = broadcast_phone.value
+                (for((k,v)<- iter if (m.contains(k))) yield k)
+        }
+        }
+        println("#" * 100)
+        println(order_phone.toDebugString)
+        val no_order_phone = base_phone_set -- order_phone.collect.toSet
+        println("no_order_phone: " + no_order_phone.size)
+
+        val no_order_rdd = sc.parallelize(no_order_phone.toSeq, 1)
+        val hiveContext = new HiveContext(sc)
+        import hiveContext.implicits._
+        val no_order_df = no_order_rdd.toDF("phone")
+        no_order_df.registerTempTable("no_order_phone")
+        hiveContext.sql("create table tmp.t20160601 as select phone from no_order_phone")
+        //no_phone_result.saveAsTextFile("/tmp/20160518/no_order_data")
+
+        sc.stop()
+    }
+}
+
