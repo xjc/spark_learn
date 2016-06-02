@@ -11,6 +11,7 @@ object rddToDataframeTest {
 
   // Encoders are also created for case classes.
 
+  case class C1(name:String, id:Int)
   def main(args:Array[String]) {
     val conf = new SparkConf().setAppName("rddToDataframeTest").setMaster("local[2]")
     val sc = new SparkContext(conf)
@@ -23,7 +24,7 @@ object rddToDataframeTest {
     // // Note: Case classes in Scala 2.10 can support only up to 22 fields. To work around this limit,
     // // you can use custom classes that implement the Product interface.
     val rdd1 = sc.parallelize(1 to 5).flatMap(i=>(1 to i)).map(i=>("a_" + i, i))
-    case class C1(name:String, id:Int)
+
     val df1 = rdd1.map{i=>C1(i._1, i._2)}.toDF
     df1.show
     df1.registerTempTable("df1")
@@ -40,7 +41,7 @@ object rddToDataframeTest {
             (m._1 + n._1, m._2 + n._2)
           }
           )
-    result1_b.collect.sortBy(_._1).foreach(println)
+    result1_b.collect.sortBy(_._1).map(i=>(i._1, i._2._1, i._2._2)).foreach(println)
 
 
     //plan a1
@@ -51,28 +52,36 @@ object rddToDataframeTest {
 
     //plan b1
     import scala.collection.mutable.{Map}
-    val rdd_test = df1.map{row=>(row.getString(0), row.getInt(1))}.
-        aggregateByKey(Map[String,(Int, Int)]())(
+    val rdd_test = df1.map{row=>(row.getString(0), (row.getString(0), row.getInt(1)))}.
+        aggregateByKey(Map[String,Int]())(
           (i,k) => {
-            if (i.get(k._1) == None ) {
-              i.put(k._1, (1, k._2))
-            } else {
-              i(k._1) = (i.get(k._1).get._1 + 1, i.get(k._1).get._2 + k._2  )
-            }
+              if (k._1 == "a_1") {
+                i.put("a_1_num", i.getOrElse("a_1_num", 0) + 1)
+                i.put("a_1_sum", i.getOrElse("a_1_sum", 0) + k._2 )
+              }
+              if (k._1 == "a_2") {
+                i.put("a_2_num", i.getOrElse("a_2_num", 0) + 1)
+                i.put("a_2_sum", i.getOrElse("a_2_sum", 0) + k._2 )
+              }
             i
           },
           (m,n) => {
-            val allKey = m.keySet ++ n.keySet
-            val combResult = Map[String,(Int, Int)]()
-            for (k<- allKey) {
-              val v1 = m.getOrElse(k, (0,0))
-              val v2 = n.getOrElse(k, (0,0))
-              combResult.put(k, v1._1 + v2._1, v1._2 + v2._2)
+            val combResult = Map[String,Int]()
+            val keySet = m.keySet ++ n.keySet
+            for (k<- keySet) {
+              combResult.put(k, m.getOrElse(k, 0) + n.getOrElse(k, 0) )
             }
             combResult
           }
-          )
-
+          ).flatMap{case(i,j)=> {
+            val result = Map[String,Int]()
+            for (a<-j) {
+              result.put(a._1, a._2)
+            }
+          result.iterator
+          }
+          }.collectAsMap
+    println((rdd_test("a_1_num")  :: rdd_test("a_1_sum") :: rdd_test("a_2_num") :: rdd_test("a_2_sum") :: Nil).mkString("\t") )
 
     sc.stop
   }
