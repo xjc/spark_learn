@@ -20,6 +20,7 @@ lazy val root = (project in file(".")).
     libraryDependencies += spark_hive,
     libraryDependencies += sparkStreamKafka,
     libraryDependencies += mysql_driver,
+    libraryDependencies += "org.anarres.lzo" % "lzo-hadoop" % "1.0.0",
     resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
     resolvers += "Local Maven Repository" at "file:///home/xjc/.m2/repository"
   )
