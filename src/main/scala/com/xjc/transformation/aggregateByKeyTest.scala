@@ -40,47 +40,47 @@ When called on a dataset of (K, V) pairs, returns a dataset of (K, U) pairs wher
 
 object aggregateByKeyTest {
 
-      implicit def int2str(num:Int):String = String.valueOf(num)
-      def main(args:Array[String]) {
-              val conf = new SparkConf().setAppName("MapPartitionsTest").setMaster("local[2]")
-              val sc = new SparkContext(conf)
-              val data = List(("a",1),("b",2),("a",3), ("a",4), ("b",3))
-              val rdd = sc.parallelize(data, 2)
+  implicit def int2str(num:Int):String = String.valueOf(num)
+  def main(args:Array[String]) {
+    val conf = new SparkConf().setAppName("MapPartitionsTest").setMaster("local[2]")
+    val sc = new SparkContext(conf)
+    val data = List(("a",1),("b",2),("a",3), ("a",4), ("b",3))
+    val rdd = sc.parallelize(data, 2)
 
-              val rdd1 = rdd.reduceByKey(_ + _)
-              rdd1.collect.foreach(println)
+    val rdd1 = rdd.reduceByKey(_ + _)
+    rdd1.collect.foreach(println)
 
-              val rdd2 = rdd.aggregateByKey(0)(_+_, _+_)
-              rdd2.collect.foreach(println)
+    val rdd2 = rdd.aggregateByKey(0)(_+_, _+_)
+    rdd2.collect.foreach(println)
 
-              val rdd3 = rdd.aggregateByKey(new HashSet[Int]())(_+_, _++_)
-              rdd3.collect.foreach(println)
+    val rdd3 = rdd.aggregateByKey(new HashSet[Int]())(_+_, _++_)
+    rdd3.collect.foreach(println)
 
-              //test
-              var data1 = sc.parallelize(List((5,3),(5,2),(5, 4),(5,3)))
-              def seq(a:Int, b:Int) : Int ={
-                  println("seq: " + a + "\t " + b)
-                  math.max(a,b)
-              }
-              def comb(a:Int, b:Int) : Int ={
-                  println("comb: " + a + "\t " + b)
-                  a + b
-              }
-              data1.aggregateByKey(1)(seq, comb).collect
-              data1.aggregateByKey(3)(seq, comb).collect
-              data1.aggregateByKey(5)(seq, comb).collect
-              
-              sc.stop
+    //test
+    var data1 = sc.parallelize(List((5,3),(5,2),(5, 4),(5,3)))
+    def seq(a:Int, b:Int) : Int ={
+      println("seq: " + a + "\t " + b)
+      math.max(a,b)
+    }
+    def comb(a:Int, b:Int) : Int ={
+      println("comb: " + a + "\t " + b)
+      a + b
+    }
+    data1.aggregateByKey(1)(seq, comb).collect
+    data1.aggregateByKey(3)(seq, comb).collect
+    data1.aggregateByKey(5)(seq, comb).collect
+
+    sc.stop
   }
 }
 
 /**
-(b,5)
-(a,8)
+ (b,5)
+ (a,8)
 
-(b,5)
-(a,8)
+ (b,5)
+ (a,8)
 
-(b,Set(2, 3))
-(a,Set(1, 3, 4))
-*/
+ (b,Set(2, 3))
+ (a,Set(1, 3, 4))
+ */
